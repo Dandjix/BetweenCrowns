@@ -8,7 +8,18 @@ public class CustomShaderCustomInspector : ShaderGUI
 {
     public enum SurfaceType
     {
-        Opaque, Transparent
+        Opaque, TransparentBlend
+    }
+
+    public override void AssignNewShaderToMaterial(Material material, Shader oldShader, Shader newShader)
+    {
+        base.AssignNewShaderToMaterial(material, oldShader, newShader);
+
+        //Not sure if this is necessary, since i could not replicate the issue this fixes
+        if (newShader.name == "Custom/CustomShader")
+        {
+            UpdateSurfaceType(material);
+        }
     }
 
 
@@ -40,7 +51,7 @@ public class CustomShaderCustomInspector : ShaderGUI
                 material.SetInt("_ZWrite", 1);
                 material.SetShaderPassEnabled("ShadowCaster", true);
                 break;
-            case SurfaceType.Transparent:
+            case SurfaceType.TransparentBlend:
                 material.renderQueue = (int)RenderQueue.Transparent;
                 material.SetOverrideTag("RenderType", "Transparent");
                 material.SetInt("_SourceBlend", (int)BlendMode.SrcAlpha);
