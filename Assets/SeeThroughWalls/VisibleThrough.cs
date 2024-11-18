@@ -15,17 +15,21 @@ namespace SeeThrough
         /// <summary>
         /// the higher this is, the most it will be priviledged compared to other objects.
         /// </summary>
-        [SerializeField] [Range(-9999,9999)] private int priority = 0;
-        public int Priority { get => priority; }
+        //[SerializeField] [Range(-9999,9999)] private int priority = 0;
+        public int Priority { get => preset.Priority; }
 
-        [SerializeField] private float size;
-        public float Size { get => size; }
-        [SerializeField] private float opacity;
-        public float Opacity { get => opacity; }
-        [SerializeField] private float smoothness;
-        public float Smoothness { get => smoothness; }
+        //[SerializeField] private float size;
+        public float Size { get => preset.Size; }
+        //[SerializeField] private float opacity;
+        public float Opacity { get => preset.Opacity; }
+        //[SerializeField] private float smoothness;
+        public float Smoothness { get => preset.Smoothness; }
 
-        [SerializeField] private float timeToVisible = 0.1f;
+
+
+        //[SerializeField] private float timeToVisible = 0.1f;
+
+        [SerializeField] private VisibleThroughPreset preset;
 
         private float visible = 0;
         public float Visible
@@ -60,7 +64,7 @@ namespace SeeThrough
                 //SeeThroughManager.Instance.TryAdd(this);
                 //Debug.Log("ray hit : added");
 
-                float newSize = Visible + Time.deltaTime / timeToVisible;
+                float newSize = Visible + Time.deltaTime / preset.timeToVisible;
 
                 Visible = Mathf.Clamp(newSize, 0, 1);
             }
@@ -70,7 +74,7 @@ namespace SeeThrough
                 //SeeThroughManager.Instance.TryRemove(this);
                 //Debug.Log("ray not hit : removed");
 
-                float newSize = Visible - Time.deltaTime / timeToVisible;
+                float newSize = Visible - Time.deltaTime / preset.timeToVisible;
 
                 Visible = Mathf.Clamp(newSize, 0, 1);
             }

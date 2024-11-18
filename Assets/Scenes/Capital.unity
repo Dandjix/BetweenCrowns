@@ -489,11 +489,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2b875479f53c6749915121c65641f61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  priority: 0
-  size: 1
-  opacity: 1
-  smoothness: 0.5
-  timeToVisible: 0.1
+  preset: {fileID: 11400000, guid: de11329d2296f304491f3480bd959151, type: 2}
 --- !u!65 &1189182493
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1014,11 +1010,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2b875479f53c6749915121c65641f61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  priority: 0
-  size: 1
-  opacity: 1
-  smoothness: 0.5
-  timeToVisible: 0.1
+  preset: {fileID: 11400000, guid: de11329d2296f304491f3480bd959151, type: 2}
 --- !u!114 &2125272511
 MonoBehaviour:
   m_ObjectHideFlags: 0

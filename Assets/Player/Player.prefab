@@ -292,11 +292,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2b875479f53c6749915121c65641f61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  priority: 0
-  size: 1
-  opacity: 1
-  smoothness: 0.5
-  timeToVisible: 0.1
+  preset: {fileID: 11400000, guid: cf13c39d1d3787243ac2356a0247d92f, type: 2}
 --- !u!114 &4101647282566755040
 MonoBehaviour:
   m_ObjectHideFlags: 0
