@@ -6,22 +6,27 @@ Shader "Custom/CustomShader"
         [MainTexture] _ColorMap("Color",2D) = "white" {}
         [MainColor] _ColorTint("Tint",Color) = (1,1,1,1)
         _Smoothness("Smoothness",float) = 0
+
+        [HideInInspector] _SourceBlend("Source blend", float) = 0
+        [HideInInspector] _DestBlend("Destination blend", float) = 0
+        [HideInInspector] _ZWrite("Zwrite", float) = 0
+
+        [HideInInspector] _SurfaceType("Surface type", float) = 0
     }
 
 
     SubShader
     {
 
-        Tags { "RenderPipeline"="UniversalPipeline" }
-
-
-
-
+        Tags { "RenderPipeline"="UniversalPipeline" "RenderType" = "Opaque"}
 
         Pass
         {
             Name "ForwardLit"
             Tags{"LightMode" = "UniversalForward"}
+
+            Blend [_SourceBlend] [_DestBlend]
+            ZWrite [_ZWrite]
 
             ColorMask RGBA
 
@@ -50,11 +55,13 @@ Shader "Custom/CustomShader"
             ColorMask 0
 
             HLSLPROGRAM
+
             #pragma vertex Vertex
             #pragma fragment Fragment
 
             #include "ShadowCasterPass.hlsl"
             ENDHLSL
         }
-    }
+     }
+    CustomEditor "CustomShaderCustomInspector"
 }
