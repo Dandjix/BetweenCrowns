@@ -8,15 +8,40 @@ namespace SeeThrough
     [DisallowMultipleComponent]
     public class SeeThroughManager : MonoBehaviour
     {
-        private static readonly int maxNumberOfSeeThroughObjects
-            //= 30;
-            = 2;
+
+        /// <summary>
+        /// DONT CHANGE THIS ON RUNTIME
+        /// </summary>
+        [SerializeField] private NumberOfVisibleThroughObjects maxNumberOfSeeThroughObjects = NumberOfVisibleThroughObjects.Fifteen;
+
+        public int MaxNumberOfSeeThroughObjects { get
+            {
+                return ((int)maxNumberOfSeeThroughObjects);
+            } 
+        }
+
+        [SerializeField] private Shader TwoObjectsShader;
+        [SerializeField] private Shader FiveObjectsShader;
+        [SerializeField] private Shader FifteenObjectsShader;
 
         public static SeeThroughManager Instance { get; private set; }
 
         private void Awake()
         {
-            if(Instance != null)
+            switch (maxNumberOfSeeThroughObjects)
+            {
+                case NumberOfVisibleThroughObjects.Two:
+                    seeThroughMaterial.shader = TwoObjectsShader;
+                    break;
+                case NumberOfVisibleThroughObjects.Five:
+                    seeThroughMaterial.shader = FiveObjectsShader;
+                    break;
+                case NumberOfVisibleThroughObjects.Fifteen:
+                    seeThroughMaterial.shader = FifteenObjectsShader;
+                    break;
+            }
+
+            if (Instance != null)
             {
                 Debug.LogWarning("you have multiple seethroughmanagers ! this is bad !");
 
@@ -30,7 +55,7 @@ namespace SeeThrough
         [SerializeField] private LayerMask mask;
         public LayerMask Mask { get => mask; }
 
-        [SerializeField] private List<VisibleThrough> objects = new List<VisibleThrough> (maxNumberOfSeeThroughObjects);
+        [SerializeField] private List<VisibleThrough> objects = new List<VisibleThrough> ();
 
 
 
@@ -41,7 +66,7 @@ namespace SeeThrough
             if(objects.Contains(obj))
                 return false;
 
-            if(objects.Count>=maxNumberOfSeeThroughObjects)
+            if(objects.Count>=MaxNumberOfSeeThroughObjects)
             {
                 int minPriority = int.MaxValue;
                 VisibleThrough minPriorityObject = null;
@@ -81,7 +106,7 @@ namespace SeeThrough
         private void UpdateObjects()
         {
 
-            for (int i = 0; i < maxNumberOfSeeThroughObjects; i++)
+            for (int i = 0; i < MaxNumberOfSeeThroughObjects; i++)
             {
 
                 if(i<objects.Count)
@@ -132,9 +157,9 @@ namespace SeeThrough
 
         private void InitializeIds()
         {
-            objectIds = new ObjectIds[maxNumberOfSeeThroughObjects];
+            objectIds = new ObjectIds[MaxNumberOfSeeThroughObjects];
 
-            for (int i = 0; i < maxNumberOfSeeThroughObjects; i++)
+            for (int i = 0; i < MaxNumberOfSeeThroughObjects; i++)
             {
                 int posId = Shader.PropertyToID("_ObjectPosition_"+(i+1));
                 int sizeId = Shader.PropertyToID("_Size_" + (i + 1));
@@ -160,6 +185,13 @@ namespace SeeThrough
             public int smoothnessId;
             public int opacityId;
         }
+    }
+
+    public enum NumberOfVisibleThroughObjects
+    {
+        Two=2,
+        Five=5,
+        Fifteen=15
     }
 }
 
