@@ -91,7 +91,7 @@ namespace SeeThrough
 
                     #if UNITY_EDITOR
 
-                    if(obj == null) //trying to remove error
+                    if(obj == null || Camera.main == null) //trying to remove error
                     {
                         continue;
                     }
