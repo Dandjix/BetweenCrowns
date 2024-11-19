@@ -1,10 +1,7 @@
 #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
 
-float4 _ColorTint;
+#include "./CustomShaderCommon.hlsl"
 
-TEXTURE2D(_ColorMap); SAMPLER(sampler_ColorMap);
-float4 _ColorMap_ST;
-float _Smoothness;
 
 struct Attributes
 {
@@ -37,12 +34,15 @@ Interpolators Vertex(Attributes input)
     
         return output;
 }
+
+
      
 float4 Fragment(Interpolators input) : SV_TARGET
 {
     float2 uv = input.uv;
-    
     float4 colorSample = SAMPLE_TEXTURE2D(_ColorMap, sampler_ColorMap, uv);
+    
+    TestAlphaClip(colorSample);
     
     InputData lightingInput = (InputData) 0;
     lightingInput.positionWS = input.positionWS;

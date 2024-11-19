@@ -1,20 +1,22 @@
 #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
 
-float4 _ColorTint;
-
-TEXTURE2D(_ColorMap); SAMPLER(sampler_ColorMap);
-float4 _ColorMap_ST;
-float _Smoothness;
+#include "./CustomShaderCommon.hlsl"
 
 struct Attributes
 {
     float3 positionOS : POSITION;
     float3 normalOS : NORMAL;
+    #ifdef _ALPHA_CUTOUT
+    float2 uv : TEXCOORD0;
+    #endif
 };
 
 struct Interpolators
 {
     float4 positionCS : SV_POSITION;
+    #ifdef _ALPHA_CUTOUT
+    float2 uv : TEXCOORD0;
+    #endif
 };
     
 
@@ -46,11 +48,20 @@ Interpolators Vertex(Attributes input)
     
     output.positionCS = GetShadowCasterPositionCS(posnInputs.positionWS, normalInputs.normalWS);
     
+    #ifdef _ALPHA_CUTOUT
+    output.uv = TRANSFORM_TEX(input.uv, _ColorMap);
+    #endif
+    
     return output;
 }
      
 float4 Fragment(Interpolators input) : SV_TARGET
 {
+    #ifdef _ALPHA_CUTOUT
+    float2 uv = input.uv;
+    float4 colorSample = SAMPLE_TEXTURE2D(_ColorMap, sampler_ColorMap, uv);
+    TestAlphaClip(colorSample);
+    #endif
+    
     return 0;
-
 }

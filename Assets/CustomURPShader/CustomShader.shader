@@ -6,6 +6,7 @@ Shader "Custom/CustomShader"
         [MainTexture] _ColorMap("Color",2D) = "white" {}
         [MainColor] _ColorTint("Tint",Color) = (1,1,1,1)
         _Smoothness("Smoothness",float) = 0
+        _Cutoff("Cutout threshold",Range(0,1)) = 0.5
 
         [HideInInspector] _SourceBlend("Source blend", float) = 0
         [HideInInspector] _DestBlend("Destination blend", float) = 0
@@ -34,6 +35,8 @@ Shader "Custom/CustomShader"
 
             #define _SPECULAR_COLOR
 
+            #pragma shader_feature_local _ALPHA_CUTOUT
+
             // #pragma multi_compile _ _MAIN_LIGHT_SHADOWS
             //TODO : check if the above code works now
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE
@@ -55,6 +58,8 @@ Shader "Custom/CustomShader"
             ColorMask 0
 
             HLSLPROGRAM
+
+            #pragma shader_feature_local _ALPHA_CUTOUT
 
             #pragma vertex Vertex
             #pragma fragment Fragment
