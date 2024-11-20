@@ -8,11 +8,14 @@ Shader "Custom/CustomShader"
         _Smoothness("Smoothness",float) = 0
         _Cutoff("Cutout threshold",Range(0,1)) = 0.5
 
+        [HideInInspector] _Cull("Cull mode", float) = 2
+
         [HideInInspector] _SourceBlend("Source blend", float) = 0
         [HideInInspector] _DestBlend("Destination blend", float) = 0
         [HideInInspector] _ZWrite("Zwrite", float) = 0
 
         [HideInInspector] _SurfaceType("Surface type", float) = 0
+        [HideInInspector] _FaceRenderingMode("Face rendering type", float) = 0
     }
 
 
@@ -28,6 +31,7 @@ Shader "Custom/CustomShader"
 
             Blend [_SourceBlend] [_DestBlend]
             ZWrite [_ZWrite]
+            Cull[_Cull]
 
             ColorMask RGBA
 
@@ -36,6 +40,7 @@ Shader "Custom/CustomShader"
             #define _SPECULAR_COLOR
 
             #pragma shader_feature_local _ALPHA_CUTOUT
+            #pragma shader_feature_local _DOUBLE_SIDED_NORMALS
 
             // #pragma multi_compile _ _MAIN_LIGHT_SHADOWS
             //TODO : check if the above code works now
@@ -56,10 +61,12 @@ Shader "Custom/CustomShader"
             Tags {"LightMode" = "ShadowCaster"}
 
             ColorMask 0
+            Cull[_Cull]
 
             HLSLPROGRAM
 
             #pragma shader_feature_local _ALPHA_CUTOUT
+            #pragma shader_feature_local _DOUBLE_SIDED_NORMALS
 
             #pragma vertex Vertex
             #pragma fragment Fragment

@@ -18,6 +18,12 @@ struct Interpolators
     float2 uv : TEXCOORD0;
     #endif
 };
+
+float3 FlipNormalBasedOnViewDirection(float3 normalWS, float3 positionWS)
+{
+    float3 viewDirWS = GetWorldSpaceNormalizeViewDir(positionWS);
+    return normalWS * dot(normalWS, viewDirWS) < 0 ? -1 : 1;
+}
     
 
 float3 _LightDirection;
@@ -25,6 +31,10 @@ float3 _LightDirection;
 float4 GetShadowCasterPositionCS(float3 positionWS, float3 normalWS)
 {
     float3 lightDirectionWS = _LightDirection;
+    #ifdef _DOUBLE_SIDED_NORMALS
+    normalWS = FlipNormalBasedOnViewDirection(normalWS, positionWS);
+    #endif    
+
     float4 positionCS = TransformWorldToHClip(ApplyShadowBias(positionWS,normalWS, lightDirectionWS));
     
     #if UNITY_REVERSED_Z
