@@ -76,8 +76,20 @@ Interpolators input
     SurfaceData surfaceInput = (SurfaceData) 0;
     surfaceInput.albedo = colorSample.rgb * _ColorTint.rgb;
     surfaceInput.alpha = colorSample.a * _ColorTint.a;
+    
+    #ifdef _SPECULAR_SETUP
+    surfaceInput.specular = SAMPLE_TEXTURE2D(_SpecularMap, sampler_SpecularMap, uv).rgb * _SpecularTint;
+    surfaceInput.metallic = 0;
+    #else
     surfaceInput.specular = 1;
-    surfaceInput.smoothness = _Smoothness;
+    surfaceInput.metallic = SAMPLE_TEXTURE2D(_MetalnessMask, sampler_MetalnessMask, uv).r * _Metalness;
+    #endif
+    
+    float smoothnessSample = SAMPLE_TEXTURE2D(_SmoothnessMask, sampler_SmoothnessMask, uv).r * _Smoothness;
+    #ifdef _ROUGHNESS_SETUP
+    smoothnessSample = 1 - smoothnessSample;
+    #endif
+    surfaceInput.smoothness = smoothnessSample;
     surfaceInput.normalTS = normalTS;
     
     return UniversalFragmentPBR(lightingInput, surfaceInput);
