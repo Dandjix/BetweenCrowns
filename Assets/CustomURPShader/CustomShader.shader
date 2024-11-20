@@ -5,8 +5,11 @@ Shader "Custom/CustomShader"
         [Header(Surface options)]
         [MainTexture] _ColorMap("Color",2D) = "white" {}
         [MainColor] _ColorTint("Tint",Color) = (1,1,1,1)
-        _Smoothness("Smoothness",float) = 0
         _Cutoff("Cutout threshold",Range(0,1)) = 0.5
+        [NoScaleOffset][Normal] _NormalMap("Normal", 2D) = "bump" {}
+        _NormalStrength("Normal strength",Range(0,1)) = 1
+        _Smoothness("Smoothness",Range(0,1)) = 0.5
+
 
         [HideInInspector] _Cull("Cull mode", float) = 2
 
@@ -37,6 +40,8 @@ Shader "Custom/CustomShader"
 
             HLSLPROGRAM
 
+            #define _NORMALMAP
+
             #define _SPECULAR_COLOR
 
             #pragma shader_feature_local _ALPHA_CUTOUT
@@ -47,6 +52,7 @@ Shader "Custom/CustomShader"
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE
 
             #pragma multi_compile_fragment _ _SHADOWS_SOFT
+            #pragma multi_compile_fragment _ DEBUG_DISPLAY
 
             #pragma vertex Vertex
             #pragma fragment Fragment
