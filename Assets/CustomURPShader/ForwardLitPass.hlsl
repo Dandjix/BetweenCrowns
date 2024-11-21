@@ -90,6 +90,7 @@ Interpolators input
     smoothnessSample = 1 - smoothnessSample;
     #endif
     surfaceInput.smoothness = smoothnessSample;
+    surfaceInput.emission = SAMPLE_TEXTURE2D(_EmissionMap, sampler_EmissionMap, uv).rgb * _EmissionTint;
     surfaceInput.normalTS = normalTS;
     
     return UniversalFragmentPBR(lightingInput, surfaceInput);

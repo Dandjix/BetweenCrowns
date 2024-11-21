@@ -21,6 +21,8 @@ Shader "Custom/CustomShader"
         [NoScaleOffset] _SmoothnessMask("Smoothness mask",2D) = "white" {}
         _Smoothness("Smoothness",Range(0,1)) = 0.5
 
+        [NoScaleOffset] _EmissionMap("Emmision map",2D) = "white" {}
+        [HDR] _EmissionTint("Emission tint",Color) = (1,1,1,1) 
 
         [HideInInspector] _Cull("Cull mode", float) = 2
 

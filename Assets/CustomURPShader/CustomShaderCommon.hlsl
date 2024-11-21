@@ -10,6 +10,7 @@ TEXTURE2D(_NormalMap); SAMPLER(sampler_NormalMap);
 TEXTURE2D(_MetalnessMask); SAMPLER(sampler_MetalnessMask);
 TEXTURE2D(_SpecularMap); SAMPLER(sampler_SpecularMap);
 TEXTURE2D(_SmoothnessMask); SAMPLER(sampler_SmoothnessMask);
+TEXTURE2D(_EmissionMap); SAMPLER(sampler_EmissionMap);
 
 float4 _ColorMap_ST;
 float4 _ColorTint;
@@ -18,6 +19,7 @@ float _NormalStrength;
 float _Metalness;
 float3 _SpecularTint;
 float _Smoothness;
+float3 _EmissionTint;
 
 
 void TestAlphaClip(float4 colorSample)
