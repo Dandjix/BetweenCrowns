@@ -24,6 +24,9 @@ Shader "Custom/CustomShader"
         [NoScaleOffset] _EmissionMap("Emmision map",2D) = "white" {}
         [HDR] _EmissionTint("Emission tint",Color) = (1,1,1,1) 
 
+        [NoScaleOffset] _ParallaxMap("Parallax map",2D) = "white" {}
+        _ParallaxStrength("Parallax strength",Range(0,1)) = 0
+
         [HideInInspector] _Cull("Cull mode", float) = 2
 
         [HideInInspector] _SourceBlend("Source blend", float) = 0

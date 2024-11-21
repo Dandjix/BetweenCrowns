@@ -1,7 +1,7 @@
 #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
 
 #include "./CustomShaderCommon.hlsl"
-
+#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/ParallaxMapping.hlsl"
 
 struct Attributes
 {
@@ -46,30 +46,40 @@ Interpolators input
 ,FRONT_FACE_TYPE frontFace : FRONT_FACE_SEMANTIC
 #endif
 ) : SV_TARGET
-{
-    float2 uv = input.uv;
-    float4 colorSample = SAMPLE_TEXTURE2D(_ColorMap, sampler_ColorMap, uv);
-    TestAlphaClip(colorSample);
+{    
+
     
-    float3 normalWS = normalize(input.normalWS);
+    float3 normalWS = input.normalWS;
+   
     
     #ifdef _DOUBLE_SIDED_NORMALS
     normalWS  *= IS_FRONT_VFACE(frontFace, 1, -1);
     #endif
     
-    InputData lightingInput = (InputData) 0;
-    lightingInput.positionWS = input.positionWS;
+    float3 positionWS = input.positionWS;
+    float3 viewDirectionWS = GetWorldSpaceNormalizeViewDir(positionWS);
+    float3 viewDirectionTS = GetViewDirectionTangentSpace(input.tangentWS, normalWS, viewDirectionWS);
+    
+    
+    float2 uv = input.uv;
+    uv += ParallaxMapping(TEXTURE2D_ARGS(_ParallaxMap, sampler_ParallaxMap), viewDirectionTS, _ParallaxStrength, uv);
+    
+    float4 colorSample = SAMPLE_TEXTURE2D(_ColorMap, sampler_ColorMap, uv);
+    TestAlphaClip(colorSample);
     
     float3 normalTS = UnpackNormalScale(SAMPLE_TEXTURE2D(_NormalMap, sampler_NormalMap, uv), _NormalStrength);
     float3x3 tangentToWorld = CreateTangentToWorld(normalWS, input.tangentWS.xyz, input.tangentWS.w);
     normalWS = normalize(TransformTangentToWorld(normalTS, tangentToWorld));
     
+    InputData lightingInput = (InputData) 0;
+    lightingInput.positionWS = positionWS;
+    
     //return float4((normalWS + 1) * 0.5, 1); //debug
     
     lightingInput.normalWS = normalWS;
     
-    lightingInput.viewDirectionWS = GetWorldSpaceNormalizeViewDir(input.positionWS);
-    lightingInput.shadowCoord = TransformWorldToShadowCoord(input.positionWS);
+    lightingInput.viewDirectionWS = viewDirectionWS;
+    lightingInput.shadowCoord = TransformWorldToShadowCoord(positionWS);
     lightingInput.positionCS = input.positionCS;
     lightingInput.tangentToWorld = tangentToWorld;
     
