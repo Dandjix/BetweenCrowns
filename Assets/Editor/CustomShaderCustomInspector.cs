@@ -18,6 +18,14 @@ public class CustomShaderCustomInspector : ShaderGUI
         DoubleSided
     }
 
+    public enum BlendType
+    {
+        Alpha,
+        Premultiplied,
+        Additive,
+        Multiply
+    }
+
     public override void AssignNewShaderToMaterial(Material material, Shader oldShader, Shader newShader)
     {
         base.AssignNewShaderToMaterial(material, oldShader, newShader);
@@ -34,11 +42,13 @@ public class CustomShaderCustomInspector : ShaderGUI
     {
         Material material = materialEditor.target as Material;
         var surfaceProp = BaseShaderGUI.FindProperty("_SurfaceType", properties, true);
+        var blendProp = BaseShaderGUI.FindProperty("_BlendType", properties, true);
         var faceProp = BaseShaderGUI.FindProperty("_FaceRenderingMode",properties, true);
 
 
         EditorGUI.BeginChangeCheck();
         surfaceProp.floatValue = (int)(SurfaceType)EditorGUILayout.EnumPopup("Surface type", (SurfaceType)surfaceProp.floatValue);
+        blendProp.floatValue = (int)(BlendType)EditorGUILayout.EnumPopup("Blend mode",(BlendType)blendProp.floatValue);
         faceProp.floatValue = (int)(FaceRenderingMode)EditorGUILayout.EnumPopup("Face rendering mode", (FaceRenderingMode)faceProp.floatValue);
         if (EditorGUI.EndChangeCheck())
         {
@@ -51,6 +61,7 @@ public class CustomShaderCustomInspector : ShaderGUI
     private void UpdateSurfaceType(Material material)
     {
         SurfaceType surface = (SurfaceType)material.GetFloat("_SurfaceType");
+        BlendType blend = (BlendType)material.GetFloat("_BlendType");
         switch (surface)
         {
             case SurfaceType.Opaque:
@@ -78,8 +89,25 @@ public class CustomShaderCustomInspector : ShaderGUI
 
                 break;
             case SurfaceType.TransparentBlend:
-                material.SetInt("_SourceBlend", (int)BlendMode.SrcAlpha);
-                material.SetInt("_DestBlend", (int)BlendMode.OneMinusSrcAlpha);
+                switch (blend)
+                {
+                    case BlendType.Alpha:
+                        material.SetInt("_SourceBlend", (int)BlendMode.SrcAlpha);
+                        material.SetInt("_DestBlend", (int)BlendMode.OneMinusSrcAlpha);
+                        break;
+                    case BlendType.Premultiplied:
+                        material.SetInt("_SourceBlend", (int)BlendMode.One);
+                        material.SetInt("_DestBlend", (int)BlendMode.OneMinusSrcAlpha);
+                        break;
+                    case BlendType.Additive:
+                        material.SetInt("_SourceBlend", (int)BlendMode.SrcAlpha);
+                        material.SetInt("_DestBlend", (int)BlendMode.One);
+                        break;
+                    case BlendType.Multiply:
+                        material.SetInt("_SourceBlend", (int)BlendMode.Zero);
+                        material.SetInt("_DestBlend", (int)BlendMode.OneMinusSrcAlpha);
+                        break;
+                }
                 material.SetInt("_ZWrite", 0);
                 break;
         }
@@ -93,6 +121,15 @@ public class CustomShaderCustomInspector : ShaderGUI
         else
         {
             material.DisableKeyword("_ALPHA_CUTOUT");
+        }
+
+        if (surface == SurfaceType.TransparentBlend && blend == BlendType.Premultiplied)
+        {
+            material.EnableKeyword("_ALPHAPREMULTIPLY_ON");
+        }
+        else
+        {
+            material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
         }
 
         FaceRenderingMode faceRenderingMode = (FaceRenderingMode)material.GetFloat("_FaceRenderingMode");

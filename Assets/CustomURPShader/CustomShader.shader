@@ -29,6 +29,7 @@ Shader "Custom/CustomShader"
         [HideInInspector] _ZWrite("Zwrite", float) = 0
 
         [HideInInspector] _SurfaceType("Surface type", float) = 0
+        [HideInInspector] _BlendType("Blend type", float) = 0
         [HideInInspector] _FaceRenderingMode("Face rendering type", float) = 0
     }
 
@@ -60,6 +61,7 @@ Shader "Custom/CustomShader"
 
             #pragma shader_feature_local_fragment _SPECULAR_SETUP
             #pragma shader_feature_local_fragment _ROUGHNESS_SETUP
+            #pragma shader_feature_local_fragment _ALPHAPREMULTIPLY_ON
 
             // #pragma multi_compile _ _MAIN_LIGHT_SHADOWS
             //TODO : check if the above code works now
