@@ -49,7 +49,7 @@ Shader "Custom/CustomShader"
     SubShader
     {
 
-        Tags { "RenderPipeline"="UniversalPipeline" "RenderType" = "Opaque"}
+        Tags { "RenderPipeline"="UniversalRenderPipeline" "RenderType" = "Opaque"}
 
         Pass
         {
