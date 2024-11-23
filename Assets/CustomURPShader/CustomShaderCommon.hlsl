@@ -13,6 +13,9 @@ TEXTURE2D(_SmoothnessMask); SAMPLER(sampler_SmoothnessMask);
 TEXTURE2D(_EmissionMap); SAMPLER(sampler_EmissionMap);
 TEXTURE2D(_ParallaxMap); SAMPLER(sampler_ParallaxMap);
 
+TEXTURE2D(_ClearCoatMask); SAMPLER(sampler_ClearCoatMask);
+TEXTURE2D(_ClearCoatSmoothnessMask); SAMPLER(sampler_ClearCoatSmoothnessMask);
+
 float4 _ColorMap_ST;
 float4 _ColorTint;
 float _Cutoff;
@@ -22,6 +25,9 @@ float3 _SpecularTint;
 float _Smoothness;
 float3 _EmissionTint;
 float _ParallaxStrength;
+
+float _ClearCoatStrength;
+float _ClearCoatSmoothness;
 
 
 void TestAlphaClip(float4 colorSample)

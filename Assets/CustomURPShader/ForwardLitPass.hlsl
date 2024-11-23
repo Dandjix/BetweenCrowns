@@ -75,6 +75,7 @@ Interpolators input
     lightingInput.positionWS = positionWS;
     
     //return float4((normalWS + 1) * 0.5, 1); //debug
+    //return SAMPLE_TEXTURE2D(_ClearCoatMask, sampler_ClearCoatMask, uv).r * _ClearCoatSrength;
     
     lightingInput.normalWS = normalWS;
     
@@ -101,6 +102,8 @@ Interpolators input
     #endif
     surfaceInput.smoothness = smoothnessSample;
     surfaceInput.emission = SAMPLE_TEXTURE2D(_EmissionMap, sampler_EmissionMap, uv).rgb * _EmissionTint;
+    surfaceInput.clearCoatMask = SAMPLE_TEXTURE2D(_ClearCoatMask, sampler_ClearCoatMask, uv).r * _ClearCoatStrength;
+    surfaceInput.clearCoatSmoothness = SAMPLE_TEXTURE2D(_ClearCoatSmoothnessMask, sampler_ClearCoatSmoothnessMask, uv).r * _ClearCoatSmoothness;
     surfaceInput.normalTS = normalTS;
     
     return UniversalFragmentPBR(lightingInput, surfaceInput);

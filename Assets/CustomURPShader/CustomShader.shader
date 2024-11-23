@@ -27,6 +27,11 @@ Shader "Custom/CustomShader"
         [NoScaleOffset] _ParallaxMap("Parallax map",2D) = "white" {}
         _ParallaxStrength("Parallax strength",Range(0,1)) = 0
 
+        [NoScaleOffset] _ClearCoatMask("Clear coat mask", 2D) = "white" {}
+        _ClearCoatStrength("Clear coat strength", Range(0,1)) = 0
+        [NoScaleOffset] _ClearCoatSmoothnessMask("Clear coat smoothness mask", 2D) = "white" {}
+        _ClearCoatSmoothness("Clear coat Smoothness", Range(0,1)) = 0
+
         [HideInInspector] _Cull("Cull mode", float) = 2
 
         [HideInInspector] _SourceBlend("Source blend", float) = 0
@@ -58,7 +63,7 @@ Shader "Custom/CustomShader"
             HLSLPROGRAM
 
             #define _NORMALMAP
-
+            #define _CLEARCOATMAP
             #define _SPECULAR_COLOR
 
             #pragma shader_feature_local _ALPHA_CUTOUT
