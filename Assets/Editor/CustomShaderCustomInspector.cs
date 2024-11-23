@@ -43,13 +43,14 @@ public class CustomShaderCustomInspector : ShaderGUI
         Material material = materialEditor.target as Material;
         var surfaceProp = BaseShaderGUI.FindProperty("_SurfaceType", properties, true);
         var blendProp = BaseShaderGUI.FindProperty("_BlendType", properties, true);
-        var faceProp = BaseShaderGUI.FindProperty("_FaceRenderingMode",properties, true);
-
+        var faceProp = BaseShaderGUI.FindProperty("_FaceRenderingMode", properties, true);
+        var useClearCoatProp = BaseShaderGUI.FindProperty("_UseClearCoat", properties,true);
 
         EditorGUI.BeginChangeCheck();
         surfaceProp.floatValue = (int)(SurfaceType)EditorGUILayout.EnumPopup("Surface type", (SurfaceType)surfaceProp.floatValue);
         blendProp.floatValue = (int)(BlendType)EditorGUILayout.EnumPopup("Blend mode",(BlendType)blendProp.floatValue);
         faceProp.floatValue = (int)(FaceRenderingMode)EditorGUILayout.EnumPopup("Face rendering mode", (FaceRenderingMode)faceProp.floatValue);
+        useClearCoatProp.floatValue = EditorGUILayout.Toggle("Use clear coat", useClearCoatProp.floatValue == 1) ? 1 : 0;
         if (EditorGUI.EndChangeCheck())
         {
             UpdateSurfaceType(material);
@@ -149,6 +150,16 @@ public class CustomShaderCustomInspector : ShaderGUI
         else
         {
             material.DisableKeyword("_DOUBLE_SIDED_NORMALS");
+        }
+
+        bool useClearCoat = material.GetFloat("_UseClearCoat") == 1;
+        if (useClearCoat)
+        {
+            material.EnableKeyword("_CLEARCOATMAP");
+        }
+        else
+        {
+            material.DisableKeyword("_CLEARCOATMAP");
         }
     }
 }

@@ -28,6 +28,7 @@ float _ParallaxStrength;
 
 float _ClearCoatStrength;
 float _ClearCoatSmoothness;
+float _UseClearCoat;
 
 
 void TestAlphaClip(float4 colorSample)
