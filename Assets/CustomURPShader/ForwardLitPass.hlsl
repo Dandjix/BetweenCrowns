@@ -19,6 +19,8 @@ struct Interpolators
     float3 positionWS : TEXCOORD1;
     float3 normalWS : TEXCOORD2;
     float4 tangentWS : TEXCOORD3;
+    
+    DECLARE_LIGHTMAP_OR_SH(lightmapUV, vertexSH, 4);
 };
     
 Interpolators Vertex(Attributes input)
@@ -34,6 +36,9 @@ Interpolators Vertex(Attributes input)
         output.normalWS = normalInputs.normalWS;
         output.tangentWS = float4(normalInputs.tangentWS, input.tangentOS.w);
         output.positionWS = posnInputs.positionWS;
+    
+        OUTPUT_LIGHTMAP_UV(input.texcoord1, unity_LightmapST, output.lightmapUV);
+        OUTPUT_SH(output.normalWS.xyz, output.vertexSH);
     
         return output;
 }
@@ -83,6 +88,8 @@ Interpolators input
     lightingInput.shadowCoord = TransformWorldToShadowCoord(positionWS);
     lightingInput.positionCS = input.positionCS;
     lightingInput.tangentToWorld = tangentToWorld;
+    lightingInput.bakedGI = SAMPLE_GI(input.lightmapUV, input.vertexSH, lightingInput.normalWS);
+
     
     SurfaceData surfaceInput = (SurfaceData) 0;
     surfaceInput.albedo = colorSample.rgb * _ColorTint.rgb;
@@ -107,6 +114,8 @@ Interpolators input
     surfaceInput.clearCoatSmoothness = SAMPLE_TEXTURE2D(_ClearCoatSmoothnessMask, sampler_ClearCoatSmoothnessMask, uv).r * _ClearCoatSmoothness;
     #endif
     surfaceInput.normalTS = normalTS;
+    
+    surfaceInput.occlusion = 1;
     
     return UniversalFragmentPBR(lightingInput, surfaceInput);
 

@@ -23,7 +23,7 @@ Shader "Custom/SeeThroughOpaque"
 
             struct Attributes
             {
-                float4 vertex : POSITION;
+                float4 positionOS : POSITION;
                 float2 uv : TEXCOORD0;
                 float4 normal : NORMAL;
                 float4 texcoord1 : TEXCOORD1;
@@ -31,11 +31,11 @@ Shader "Custom/SeeThroughOpaque"
 
             struct Interpolators
             {
-                float4 vertex : SV_POSITION;
+                float4 positionCS : SV_POSITION;
                 float2 uv : TEXCOORD0;
                 float3 positionWS : TEXCOORD1;
                 float3 normalWS : TEXCOORD2;
-                float3 viewDir : TEXCOORD3;
+                float3 tangentWS : TEXCOORD3;
                 DECLARE_LIGHTMAP_OR_SH(lightmapUV, vertexSH, 4);
             };
 
@@ -45,43 +45,44 @@ Shader "Custom/SeeThroughOpaque"
             float4 _BaseColor;
             float _Smoothness, _Metallic;
 
-            Interpolators vert (Attributes v)
+            Interpolators vert (Attributes input)
             {
-                Interpolators o;
-                o.positionWS = TransformObjectToWorld(v.vertex.xyz);
-                o.normalWS = TransformObjectToWorldNormal(v.normal.xyz);
-                o.viewDir = normalize(_WorldSpaceCameraPos - o.positionWS);
-                o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-                o.vertex = TransformWorldToHClip(o.positionWS);
+                Interpolators output;
+                output.positionWS = TransformObjectToWorld(input.positionOS.xyz);
+                output.normalWS = TransformObjectToWorldNormal(input.normal.xyz);
+                output.tangentWS = normalize(_WorldSpaceCameraPos - output.positionWS);
+                output.uv = TRANSFORM_TEX(input.uv, _MainTex);
+                output.positionCS = TransformWorldToHClip(output.positionWS);
 
-                OUTPUT_LIGHTMAP_UV( v.texcoord1, unity_LightmapST, o.lightmapUV );
-    OUTPUT_SH(o.normalWS.xyz, o.vertexSH );
+                OUTPUT_LIGHTMAP_UV( input.texcoord1, unity_LightmapST, output.lightmapUV );
+    OUTPUT_SH(output.normalWS.xyz, output.vertexSH );
 
-                return o;
+                return output;
             }
 
-            half4 frag (Interpolators i) : SV_Target
+            half4 frag (Interpolators input) : SV_Target
             {
-                half4 col = tex2D(_MainTex, i.uv);
-                InputData inputdata = (InputData)0;
-                inputdata.positionWS = i.positionWS;
-                inputdata.normalWS = normalize(i.normalWS);
-                inputdata.viewDirectionWS = i.viewDir;
-                inputdata.bakedGI = SAMPLE_GI( i.lightmapUV, i.vertexSH, inputdata.normalWS );
+                //half4 col = tex2D(_MainTex, input.uv);
 
-                SurfaceData surfacedata;
-                surfacedata.albedo = _BaseColor;
-                surfacedata.specular = 0;
-                surfacedata.metallic = _Metallic;
-                surfacedata.smoothness = _Smoothness;
-                surfacedata.normalTS = 0;
-                surfacedata.emission = 0;
-                surfacedata.occlusion = 1;
-                surfacedata.alpha = 0;
-                surfacedata.clearCoatMask = 0;
-                surfacedata.clearCoatSmoothness = 0;
+                InputData lightingInput = (InputData)0;
+                lightingInput.positionWS = input.positionWS;
+                lightingInput.normalWS = normalize(input.normalWS);
+                lightingInput.viewDirectionWS = input.tangentWS;
+                lightingInput.bakedGI = SAMPLE_GI( input.lightmapUV, input.vertexSH, lightingInput.normalWS );
 
-                return UniversalFragmentPBR(inputdata, surfacedata);
+                SurfaceData surfaceInput;
+                surfaceInput.albedo = _BaseColor;
+                surfaceInput.specular = 0;
+                surfaceInput.metallic = _Metallic;
+                surfaceInput.smoothness = _Smoothness;
+                surfaceInput.normalTS = 0;
+                surfaceInput.emission = 0;
+                surfaceInput.occlusion = 1;
+                surfaceInput.alpha = 0;
+                surfaceInput.clearCoatMask = 0;
+                surfaceInput.clearCoatSmoothness = 0;
+
+                return UniversalFragmentPBR(lightingInput, surfaceInput);
             }
             ENDHLSL
         }
