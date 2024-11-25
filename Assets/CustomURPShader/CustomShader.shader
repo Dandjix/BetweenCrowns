@@ -3,7 +3,7 @@ Shader "Custom/CustomShader"
     Properties
     {
         [Header(Surface options)]
-        [MainTexture] _MainTex("Color",2D) = "white" {}
+        [MainTexture] _ColorMap("Color",2D) = "white" {}
         [MainColor] _ColorTint("Tint",Color) = (1,1,1,1)
         _Cutoff("Cutout threshold",Range(0,1)) = 0.5
 
@@ -15,7 +15,7 @@ Shader "Custom/CustomShader"
 
         [Toggle(_SPECULAR_SETUP)] _SpecularSetupToggle("Use specular workflow",float) = 0
         [NoScaleOffset] _SpecularMap("Specular map",2D) = "white" {}
-        _SpecularTint("Specular tint",Color) = (1,1,1,1)
+        _SpecularTint("Specular tint",Color) = (0,0,0,1)
 
         [Toggle(_ROUGHNESS_SETUP)] _RoughnessSetupToggle("Use roughness instead of smoothness",float) = 0
         [NoScaleOffset] _SmoothnessMask("Smoothness mask",2D) = "white" {}
