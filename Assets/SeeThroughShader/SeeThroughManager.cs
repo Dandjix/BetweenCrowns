@@ -35,8 +35,14 @@ namespace SeeThrough
             }
             Instance = this;
 
-            setMaxObjectsKeyword();
+            setSeeThroughMaterials();
 
+            setMaxObjectsKeyword();
+        }
+
+        private void setSeeThroughMaterials()
+        {
+            seeThrougMaterials = SeeThroughMaterialsLoader.load();
         }
 
         private void setMaxObjectsKeyword()
@@ -44,30 +50,42 @@ namespace SeeThrough
             switch (maxObjects)
             {
                 case MaxObjects.MAX_OBJECTS_150:
-                    seeThroughMaterial.EnableKeyword("MAX_OBJECTS_150");
-                    seeThroughMaterial.DisableKeyword("MAX_OBJECTS_50");
-                    seeThroughMaterial.DisableKeyword("MAX_OBJECTS_15");
+                    foreach(var seeThroughMaterial in seeThrougMaterials)
+                    {
+                        seeThroughMaterial.EnableKeyword("MAX_OBJECTS_150");
+                        seeThroughMaterial.DisableKeyword("MAX_OBJECTS_50");
+                        seeThroughMaterial.DisableKeyword("MAX_OBJECTS_15");
+                    }
                     break;
                 case MaxObjects.MAX_OBJECTS_50:
-                    seeThroughMaterial.DisableKeyword("MAX_OBJECTS_150");
-                    seeThroughMaterial.EnableKeyword("MAX_OBJECTS_50");
-                    seeThroughMaterial.DisableKeyword("MAX_OBJECTS_15");
+                    foreach (var seeThroughMaterial in seeThrougMaterials)
+                    {
+                        seeThroughMaterial.DisableKeyword("MAX_OBJECTS_150");
+                        seeThroughMaterial.EnableKeyword("MAX_OBJECTS_50");
+                        seeThroughMaterial.DisableKeyword("MAX_OBJECTS_15");
+                    }
                     break;
                 case MaxObjects.MAX_OBJECTS_15:
-                    seeThroughMaterial.DisableKeyword("MAX_OBJECTS_150");
-                    seeThroughMaterial.DisableKeyword("MAX_OBJECTS_50");
-                    seeThroughMaterial.EnableKeyword("MAX_OBJECTS_15");
+                    foreach (var seeThroughMaterial in seeThrougMaterials)
+                    {
+                        seeThroughMaterial.DisableKeyword("MAX_OBJECTS_150");
+                        seeThroughMaterial.DisableKeyword("MAX_OBJECTS_50");
+                        seeThroughMaterial.EnableKeyword("MAX_OBJECTS_15");
+                    }
                     break;
                 case MaxObjects.MAX_OBJECTS_5:
-                    seeThroughMaterial.DisableKeyword("MAX_OBJECTS_150");
-                    seeThroughMaterial.DisableKeyword("MAX_OBJECTS_50");
-                    seeThroughMaterial.DisableKeyword("MAX_OBJECTS_15");
+                    foreach (var seeThroughMaterial in seeThrougMaterials)
+                    {
+                        seeThroughMaterial.DisableKeyword("MAX_OBJECTS_150");
+                        seeThroughMaterial.DisableKeyword("MAX_OBJECTS_50");
+                        seeThroughMaterial.DisableKeyword("MAX_OBJECTS_15");
+                    }
                     break;
             }
         }
 
-        // --
-        [SerializeField] private Material seeThroughMaterial;
+        private Material[] seeThrougMaterials;
+
         [SerializeField] private LayerMask mask;
         public LayerMask Mask { get => mask; }
 
@@ -127,10 +145,13 @@ namespace SeeThrough
             float[] opacities = new float[MaxNumberOfSeeThroughObjects];
             float[] smoothnesses = new float[MaxNumberOfSeeThroughObjects];
 
-            seeThroughMaterial.SetVectorArray("_ObjectPositions", positions);
-            seeThroughMaterial.SetFloatArray("_ObjectSizes", sizes);
-            seeThroughMaterial.SetFloatArray("_ObjectOpacities", opacities);
-            seeThroughMaterial.SetFloatArray("_ObjectSmoothnesses", smoothnesses);
+            foreach (var seeThroughMaterial in seeThrougMaterials)
+            {
+                seeThroughMaterial.SetVectorArray("_ObjectPositions", positions);
+                seeThroughMaterial.SetFloatArray("_ObjectSizes", sizes);
+                seeThroughMaterial.SetFloatArray("_ObjectOpacities", opacities);
+                seeThroughMaterial.SetFloatArray("_ObjectSmoothnesses", smoothnesses);
+            }
         }
         #endif
 
@@ -165,11 +186,13 @@ namespace SeeThrough
                     sizes[i] = 0;
                 }
             }
-
-            seeThroughMaterial.SetVectorArray("_ObjectPositions", positions);
-            seeThroughMaterial.SetFloatArray("_ObjectSizes", sizes);
-            seeThroughMaterial.SetFloatArray("_ObjectOpacities", opacities);
-            seeThroughMaterial.SetFloatArray("_ObjectSmoothnesses", smoothnesses);
+            foreach (var seeThroughMaterial in seeThrougMaterials)
+            {
+                seeThroughMaterial.SetVectorArray("_ObjectPositions", positions);
+                seeThroughMaterial.SetFloatArray("_ObjectSizes", sizes);
+                seeThroughMaterial.SetFloatArray("_ObjectOpacities", opacities);
+                seeThroughMaterial.SetFloatArray("_ObjectSmoothnesses", smoothnesses);
+            }
         }
     }
 }

@@ -3,7 +3,7 @@ Shader "Custom/CustomShader"
     Properties
     {
         [Header(Surface options)]
-        [MainTexture] _ColorMap("Color",2D) = "white" {}
+        [MainTexture] _MainTex("Color",2D) = "white" {}
         [MainColor] _ColorTint("Tint",Color) = (1,1,1,1)
         _Cutoff("Cutout threshold",Range(0,1)) = 0.5
 
