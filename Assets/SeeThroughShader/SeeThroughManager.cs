@@ -6,10 +6,24 @@ namespace SeeThrough
     using UnityEngine.UIElements;
     using static UnityEditor.PlayerSettings;
 
+    public enum MaxObjects
+    {
+        MAX_OBJECTS_150 = 150,
+        MAX_OBJECTS_50 = 50,
+        MAX_OBJECTS_15 = 15,
+        MAX_OBJECTS_5 = 5,
+    }
+
     [DisallowMultipleComponent]
     public class SeeThroughManager : MonoBehaviour
     {
-        public int MaxNumberOfSeeThroughObjects { get; private set; } = 5;
+        /// <summary>
+        /// DONT CHANGE THIS AT RUNTIME
+        /// </summary>
+        [SerializeField]
+        private MaxObjects maxObjects = MaxObjects.MAX_OBJECTS_5;
+
+        public int MaxNumberOfSeeThroughObjects { get => ((int)maxObjects); }
 
         public static SeeThroughManager Instance { get; private set; }
 
@@ -20,6 +34,41 @@ namespace SeeThrough
                 Debug.LogWarning("you have multiple seethroughmanagers ! this is bad !");
             }
             Instance = this;
+
+            setMaxObjectsKeyword();
+
+        }
+
+        private void setMaxObjectsKeyword()
+        {
+            switch (maxObjects)
+            {
+                case MaxObjects.MAX_OBJECTS_150:
+                    seeThroughMaterial.EnableKeyword("MAX_OBJECTS_150");
+                    seeThroughMaterial.DisableKeyword("MAX_OBJECTS_50");
+                    seeThroughMaterial.DisableKeyword("MAX_OBJECTS_15");
+                    break;
+                case MaxObjects.MAX_OBJECTS_50:
+                    seeThroughMaterial.DisableKeyword("MAX_OBJECTS_150");
+                    seeThroughMaterial.EnableKeyword("MAX_OBJECTS_50");
+                    seeThroughMaterial.DisableKeyword("MAX_OBJECTS_15");
+                    break;
+                case MaxObjects.MAX_OBJECTS_15:
+                    seeThroughMaterial.DisableKeyword("MAX_OBJECTS_150");
+                    seeThroughMaterial.DisableKeyword("MAX_OBJECTS_50");
+                    seeThroughMaterial.EnableKeyword("MAX_OBJECTS_15");
+                    break;
+                case MaxObjects.MAX_OBJECTS_5:
+                    seeThroughMaterial.DisableKeyword("MAX_OBJECTS_150");
+                    seeThroughMaterial.DisableKeyword("MAX_OBJECTS_50");
+                    seeThroughMaterial.DisableKeyword("MAX_OBJECTS_15");
+                    break;
+            }
+            Debug.Log("keywords set : "+
+                "+\n 150 : " + seeThroughMaterial.IsKeywordEnabled("MAX_OBJECTS_150") +
+                "+\n 50 : " + seeThroughMaterial.IsKeywordEnabled("MAX_OBJECTS_50") +
+                "+\n 15 : " + seeThroughMaterial.IsKeywordEnabled("MAX_OBJECTS_15")
+                );
         }
 
         // --
@@ -107,33 +156,12 @@ namespace SeeThrough
                 }
             }
 
-            var posStr = "positions ("+positions.Length+") : ";
-            foreach (Vector4 pos in positions)
-            {
-                posStr += pos.x + " : " + pos.y + "\n ";
-            }
-            Debug.Log(posStr);
-
-            printFloatArray(sizes, "sizes");
-            printFloatArray(opacities, "opacities");
-            printFloatArray(smoothnesses, "smoothnesses");
-
             seeThroughMaterial.SetVectorArray("_ObjectPositions", positions);
             seeThroughMaterial.SetFloatArray("_ObjectSizes", sizes);
             seeThroughMaterial.SetFloatArray("_ObjectOpacities", opacities);
             seeThroughMaterial.SetFloatArray("_ObjectSmoothnesses", smoothnesses);
         }
-        private static void printFloatArray(float[] floatArray,string title)
-        {
-            var str = title+" : ";
-            foreach (var pos in floatArray)
-            {
-                str += pos+", ";
-            }
-            Debug.Log(str);
-        }
     }
-
 }
 
 

@@ -654,6 +654,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b031e74f9828834b8029eaf87cbf361, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxObjects: 15
   seeThroughMaterial: {fileID: 2100000, guid: 7ac90f5c76d7524429147f0a5be78f69, type: 2}
   mask:
     serializedVersion: 2

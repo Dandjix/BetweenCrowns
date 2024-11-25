@@ -90,11 +90,17 @@ Shader "Custom/SeeThrough/Opaque"
             #pragma vertex Vertex
             #pragma fragment Fragment
 
+            #pragma MAX_OBJECTS_150
+            #pragma MAX_OBJECTS_50
+            #pragma MAX_OBJECTS_15
+
+            #pragma multi_compile _ MAX_OBJECTS_150 MAX_OBJECTS_50 MAX_OBJECTS_15
+
             #ifdef MAX_OBJECTS_150
                 #define MAX_OBJECTS 150
-            #elif MAX_OBJECTS_50
+            #elif defined(MAX_OBJECTS_50)
                 #define MAX_OBJECTS 50
-            #elif MAX_OBJECTS_15
+            #elif defined(MAX_OBJECTS_15)
                 #define MAX_OBJECTS 15
             #else
                 #define MAX_OBJECTS 5
