@@ -109,8 +109,6 @@ Interpolators input
     
     float2 ndc = GetNormalizedScreenSpaceUV(input.positionCS.xy);
     
-    //return float4(ndc,0,1);
-    
     float minAlpha = 1;
 
     for (int i = 0; i < MAX_OBJECTS; i++)

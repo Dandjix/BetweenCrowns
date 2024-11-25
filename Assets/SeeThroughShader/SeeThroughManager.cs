@@ -3,6 +3,7 @@ namespace SeeThrough
     using System.Collections;
     using System.Collections.Generic;
     using UnityEngine;
+    using UnityEngine.UIElements;
     using static UnityEditor.PlayerSettings;
 
     [DisallowMultipleComponent]
@@ -106,12 +107,33 @@ namespace SeeThrough
                 }
             }
 
+            var posStr = "positions ("+positions.Length+") : ";
+            foreach (Vector4 pos in positions)
+            {
+                posStr += pos.x + " : " + pos.y + "\n ";
+            }
+            Debug.Log(posStr);
+
+            printFloatArray(sizes, "sizes");
+            printFloatArray(opacities, "opacities");
+            printFloatArray(smoothnesses, "smoothnesses");
+
             seeThroughMaterial.SetVectorArray("_ObjectPositions", positions);
             seeThroughMaterial.SetFloatArray("_ObjectSizes", sizes);
             seeThroughMaterial.SetFloatArray("_ObjectOpacities", opacities);
             seeThroughMaterial.SetFloatArray("_ObjectSmoothnesses", smoothnesses);
         }
+        private static void printFloatArray(float[] floatArray,string title)
+        {
+            var str = title+" : ";
+            foreach (var pos in floatArray)
+            {
+                str += pos+", ";
+            }
+            Debug.Log(str);
+        }
     }
+
 }
 
 

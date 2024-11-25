@@ -88,7 +88,7 @@ Shader "Custom/SeeThrough/Opaque"
             #pragma vertex Vertex
             #pragma fragment Fragment
 
-            #define MAX_OBJECTS 1
+            #define MAX_OBJECTS 5
 
             float2 _ObjectPositions[MAX_OBJECTS];
             float _ObjectSizes[MAX_OBJECTS];    
