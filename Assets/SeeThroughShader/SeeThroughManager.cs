@@ -64,11 +64,6 @@ namespace SeeThrough
                     seeThroughMaterial.DisableKeyword("MAX_OBJECTS_15");
                     break;
             }
-            Debug.Log("keywords set : "+
-                "+\n 150 : " + seeThroughMaterial.IsKeywordEnabled("MAX_OBJECTS_150") +
-                "+\n 50 : " + seeThroughMaterial.IsKeywordEnabled("MAX_OBJECTS_50") +
-                "+\n 15 : " + seeThroughMaterial.IsKeywordEnabled("MAX_OBJECTS_15")
-                );
         }
 
         // --
@@ -123,6 +118,21 @@ namespace SeeThrough
 
             return res;
         }
+
+        #if UNITY_EDITOR
+        private void OnDestroy()
+        {
+            Vector4[] positions = new Vector4[MaxNumberOfSeeThroughObjects];
+            float[] sizes = new float[MaxNumberOfSeeThroughObjects];
+            float[] opacities = new float[MaxNumberOfSeeThroughObjects];
+            float[] smoothnesses = new float[MaxNumberOfSeeThroughObjects];
+
+            seeThroughMaterial.SetVectorArray("_ObjectPositions", positions);
+            seeThroughMaterial.SetFloatArray("_ObjectSizes", sizes);
+            seeThroughMaterial.SetFloatArray("_ObjectOpacities", opacities);
+            seeThroughMaterial.SetFloatArray("_ObjectSmoothnesses", smoothnesses);
+        }
+        #endif
 
         private void Update()
         {

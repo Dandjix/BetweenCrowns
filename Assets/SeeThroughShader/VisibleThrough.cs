@@ -31,6 +31,8 @@ namespace SeeThrough
 
         [SerializeField] private VisibleThroughPreset preset;
 
+        private bool isVisible = true;
+
         private float visible = 0;
         public float Visible
         {
@@ -58,7 +60,7 @@ namespace SeeThrough
 
             //Debug.Log("trying to cast ray");
 
-            if (Physics.Raycast(ray, 1000, Mask))
+            if (Physics.Raycast(ray, 1000, Mask) && isVisible)
             {
                 //SeeThroughMaterial.SetFloat(sizeID, 1);
                 //SeeThroughManager.Instance.TryAdd(this);
@@ -77,6 +79,8 @@ namespace SeeThrough
                 float newSize = Visible - Time.deltaTime / preset.timeToVisible;
 
                 Visible = Mathf.Clamp(newSize, 0, 1);
+                if(Visible <= 0 && !isVisible)
+                    enabled = false;
             }
 
             //var view = Camera.main.WorldToViewportPoint(transform.position);
@@ -86,12 +90,12 @@ namespace SeeThrough
 
         private void OnBecameInvisible()
         {
-            SeeThroughManager.Instance.TryRemove(this);
-            enabled = false;
+            isVisible = false;
         }
 
         private void OnBecameVisible()
         {
+            isVisible = true;
             enabled = true;
         }
     }
