@@ -20,8 +20,7 @@ Material:
   m_CustomRenderQueue: 3000
   stringTagMap:
     RenderType: Transparent
-  disabledShaderPasses:
-  - SHADOWCASTER
+  disabledShaderPasses: []
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -123,6 +122,8 @@ Material:
     - _BlendOp: 0
     - _BlendType: 1
     - _BumpScale: 1
+    - _CastShadows: 1
+    - _CastsShadows: 0
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 1
     - _ClearCoatSmoothnessStrength: 0.42

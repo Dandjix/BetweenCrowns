@@ -45,6 +45,8 @@ Shader "Custom/SeeThrough/Opaque"
         [HideInInspector] _FaceRenderingMode("Face rendering type", float) = 0
 
         [HideInInspector] _UseClearCoat("Use clear coat",float) = 0
+
+        [HideInInspector] _CastShadows("Cast shadows",float) = 0
     }
 
 
@@ -88,7 +90,15 @@ Shader "Custom/SeeThrough/Opaque"
             #pragma vertex Vertex
             #pragma fragment Fragment
 
-            #define MAX_OBJECTS 5
+            #ifdef MAX_OBJECTS_150
+                #define MAX_OBJECTS 150
+            #elif MAX_OBJECTS_50
+                #define MAX_OBJECTS 50
+            #elif MAX_OBJECTS_15
+                #define MAX_OBJECTS 15
+            #else
+                #define MAX_OBJECTS 5
+            #endif
 
             float2 _ObjectPositions[MAX_OBJECTS];
             float _ObjectSizes[MAX_OBJECTS];    
@@ -119,5 +129,5 @@ Shader "Custom/SeeThrough/Opaque"
             ENDHLSL
         }
      }
-    CustomEditor "CustomShaderCustomInspector"
+    CustomEditor "SeeThroughShaderCustomInspector"
 }
