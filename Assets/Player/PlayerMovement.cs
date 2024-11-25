@@ -42,8 +42,11 @@ namespace Player
             {
                 yInput -= 1;
             }
+            var input = new Vector2(xInput, yInput);
+            if (input.sqrMagnitude>1)
+                input = input.normalized;
 
-            return new Vector2(xInput, yInput);
+            return input;
         }
     }
 }

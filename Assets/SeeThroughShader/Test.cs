@@ -4,13 +4,11 @@ using UnityEngine;
 
 public class Test : MonoBehaviour
 {
-    //private void OnBecameInvisible()
-    //{
-    //    Debug.Log("invisible at "+Time.time);
-    //}
-
-    //private void OnBecameVisible()
-    //{
-    //    Debug.Log("visible at " + Time.time);
-    //}
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            Destroy(gameObject);
+        }
+    }
 }

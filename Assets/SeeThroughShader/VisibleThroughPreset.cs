@@ -15,7 +15,7 @@ namespace SeeThrough
 
         [Range(0,1)]public float Smoothness=0.5f;
 
-        [Min(0.01f)]public float timeToVisible = 0.1f;
+        [Min(0.01f)]public float TimeToVisible = 0.1f;
     }
 
 }
