@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1514e91050fb714887f93a9f702758f, type: 3}
   m_Name: Human
   m_EditorClassIdentifier: 
-  Priority: 9999
+  Priority: 1000
   Size: 1
   Opacity: 1
   Smoothness: 0.5

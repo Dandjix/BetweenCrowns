@@ -103,7 +103,7 @@ Interpolators input
     
     //surfaceInput.alpha = colorSample.a * _ColorTint.a;
     
-    float alpha;
+
     
     //SG_OneSeeThroughObject(float2(0.5, 0.5), 1, 0.5, 1, NDCPosition, alpha);
     
@@ -111,13 +111,23 @@ Interpolators input
     
     //return float4(ndc,0,1);
     
-    SG_OneSeeThroughObject(float2(0.5, 0.5), 1, 0.5, 1, ndc, alpha);
+    float minAlpha = 1;
+
+    for (int i = 0; i < MAX_OBJECTS; i++)
+    {
+        float alpha;
+        SG_OneSeeThroughObject(_ObjectPositions[i],_ObjectSizes[i],_ObjectSmoothnesses[i],_ObjectOpacities[i], ndc, alpha);
+        if(alpha < minAlpha)
+        {
+            minAlpha = alpha;
+        }
+    }
     
-    return alpha;
+
     
     //alpha = 0.5;
     
-    surfaceInput.alpha = alpha;
+    surfaceInput.alpha = minAlpha;
     
     #ifdef _SPECULAR_SETUP
     surfaceInput.specular = SAMPLE_TEXTURE2D(_SpecularMap, sampler_SpecularMap, uv).rgb * _SpecularTint;

@@ -390,14 +390,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b031e74f9828834b8029eaf87cbf361, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxNumberOfSeeThroughObjects: 15
-  TwoObjectsShader: {fileID: -6465566751694194690, guid: 668b620bb938bb1429d079187d8fda3f,
-    type: 3}
-  FiveObjectsShader: {fileID: -6465566751694194690, guid: 1393c121515d973498735b9ee296b02c,
-    type: 3}
-  FifteenObjectsShader: {fileID: -6465566751694194690, guid: 089a1e5bf940411438246c8c314a71dd,
-    type: 3}
-  seeThroughMaterial: {fileID: 2100000, guid: 88483c963db5ea94abd1c8285f68fdf0, type: 2}
+  seeThroughMaterial: {fileID: 2100000, guid: 7ac90f5c76d7524429147f0a5be78f69, type: 2}
   mask:
     serializedVersion: 2
     m_Bits: 8
@@ -496,7 +489,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2b875479f53c6749915121c65641f61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  preset: {fileID: 11400000, guid: de11329d2296f304491f3480bd959151, type: 2}
+  preset: {fileID: 11400000, guid: d819227be6eba2349993ae7fc210a5af, type: 2}
 --- !u!65 &1189182493
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -716,7 +709,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 88483c963db5ea94abd1c8285f68fdf0, type: 2}
+  - {fileID: 2100000, guid: 7ac90f5c76d7524429147f0a5be78f69, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1070,7 +1063,7 @@ Transform:
   m_GameObject: {fileID: 1830837088}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.04, y: 20, z: -15.62}
+  m_LocalPosition: {x: 2.44, y: 20, z: -26.5}
   m_LocalScale: {x: 10, y: 40, z: 10}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -1314,7 +1307,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 88483c963db5ea94abd1c8285f68fdf0, type: 2}
+  - {fileID: 2100000, guid: 7ac90f5c76d7524429147f0a5be78f69, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1478,7 +1471,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2b875479f53c6749915121c65641f61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  preset: {fileID: 11400000, guid: de11329d2296f304491f3480bd959151, type: 2}
+  preset: {fileID: 11400000, guid: d819227be6eba2349993ae7fc210a5af, type: 2}
 --- !u!114 &2125272511
 MonoBehaviour:
   m_ObjectHideFlags: 0

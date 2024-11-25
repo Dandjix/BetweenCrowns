@@ -7,6 +7,8 @@ Shader "Custom/SeeThrough/Opaque"
         [MainColor] _ColorTint("Tint",Color) = (1,1,1,1)
         _Cutoff("Cutout threshold",Range(0,1)) = 0.5
 
+        [Toggle(_CASTS_SHADOWS)] _CastsShadows("Casts shadows",float) = 0
+
         [NoScaleOffset][Normal] _NormalMap("Normal", 2D) = "bump" {}
         _NormalStrength("Normal strength",Range(0,1)) = 1
 
@@ -68,6 +70,7 @@ Shader "Custom/SeeThrough/Opaque"
 
             #pragma shader_feature_local _ALPHA_CUTOUT
             #pragma shader_feature_local _DOUBLE_SIDED_NORMALS
+            #pragma shader_feature_local _CASTS_SHADOWS
 
             #pragma shader_feature_local_fragment _SPECULAR_SETUP
             #pragma shader_feature_local_fragment _ROUGHNESS_SETUP
@@ -85,7 +88,12 @@ Shader "Custom/SeeThrough/Opaque"
             #pragma vertex Vertex
             #pragma fragment Fragment
 
+            #define MAX_OBJECTS 1
 
+            float2 _ObjectPositions[MAX_OBJECTS];
+            float _ObjectSizes[MAX_OBJECTS];    
+            float _ObjectOpacities[MAX_OBJECTS];  
+            float _ObjectSmoothnesses[MAX_OBJECTS]; 
 
             #include "ForwardLitPass.hlsl"
             ENDHLSL
