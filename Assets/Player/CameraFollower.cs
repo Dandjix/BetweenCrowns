@@ -6,7 +6,6 @@ namespace Player
 
     public class CameraFollower : MonoBehaviour
     {
-
         [SerializeField] private Transform PlayerTransform;
         private Vector3 offsetPosition;
         //private Quaternion offsetRotation;
